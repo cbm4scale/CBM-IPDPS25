@@ -2,6 +2,7 @@
 Refactor of latest version of CBM4Scale. New lean and informative benchmark.
 
 ## Setup
+The docker should be installed on the local machine as mentioned [here](https://docs.docker.com/get-started/get-docker/).
 ```bash
 # On the local machine
 git clone https://github.com/cbm4scale/CBM-IPDPS25.git --recursive
