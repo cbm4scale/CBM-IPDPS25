@@ -20,7 +20,7 @@ At the end of execution, the script outputs benchmarking statistics including:
     - minimum and maximum matrix multiplication time recorded.
 
 Example Usage:
-    [OMP_ENV_VARS] python benchmark/benchmark_matmul --operation cbm-adx  
+    [OMP_ENV_VARS] python benchmark/benchmark_matmul.py --operation cbm-adx  
 
 Note: 
     - See 'parser.add_arguments' for more options.
