@@ -14,7 +14,7 @@ from torch_geometric.data import Batch
 from torch_geometric.datasets import TUDataset, SuiteSparseMatrixCollection, Planetoid
 
 import os
-data_dir = os.path.dirname(os.path.abspath(__file__)) + '../data'
+data_dir = os.path.dirname(os.path.abspath(__file__)) + '/../data'
 
 ############################################################
 ########################## LAYERS ##########################

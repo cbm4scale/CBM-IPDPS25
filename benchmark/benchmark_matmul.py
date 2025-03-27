@@ -1,5 +1,5 @@
 """
-This script record the execution time of the matrix multiplication methods in:
+This script records the execution time of the matrix multiplication methods in:
     - 'cbm/cbm4mm.py'       - 'cbm/mkl4mm.py'  
     - 'cbm/cbm4ad.py'       - 'cbm/mkl4ad.py'
     - 'cbm/cbm4dad.py'      - 'cbm/mkl4dad.py'
@@ -20,7 +20,7 @@ At the end of execution, the script outputs benchmarking statistics including:
     - minimum and maximum matrix multiplication time recorded.
 
 Example Usage:
-    [OMP_ENV_VARS] python benchmark/validate_generic_matmul --operation adx  
+    [OMP_ENV_VARS] python benchmark/benchmark_matmul --operation adx  
 
 Note: 
     - See 'parser.add_arguments' for more options.

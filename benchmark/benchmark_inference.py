@@ -1,3 +1,24 @@
+"""
+This script records the execution time of a standard Graph Convolutional Network
+(GCN) inference stage. The graph's laplacian is converted to CBM or CSR formats
+with 'cbm/cbm4dad.py' or 'cbm/mkl4dad.py', respectively.
+
+Then, the matrix products involving the graph's laplacian inside the forward 
+pass are carried by the matrix multiplication methods of 'cbm/cbm4dad.py' or 
+'cbm/mkl4dad.py', depending on the representation chosen previously.
+
+At the end of execution, the script outputs benchmarking statistics including:
+    - mean inference time and standard deviation.
+    - minimum and maximum inference time recorded.
+
+Example Usage:
+    [OMP_ENV_VARS] python benchmark/benchmark_inference --nn cbm-gcn-inference
+
+Note: 
+    - See 'parser.add_arguments' for more options.
+    - see 'benchmark/utilities.py' for datasets options. 
+"""
+
 import argparse
 from time import time
 from torch import inference_mode, rand, tensor
@@ -8,6 +29,41 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 
 class NodePrediction(Module):
+    """
+    A PyTorch module implementing a multi-layer GCN for node prediction tasks.
+    
+    This class creates a GCN architecture with:
+    - One input layer
+    - Configurable number of hidden layers
+    - One output layer
+    - ReLU activation between layers
+    
+    Args:
+        layer (str): 
+            Layer implementation to use ('cbm-gcn-inference' or 'mkl-gcn-inference').
+        
+        in_features (int): 
+            Number of input features.
+        
+        hidden_features (int): 
+            Number of features in hidden layers.
+        
+        out_features (int): 
+            Number of output features.
+        
+        num_hidden_layers (int): 
+            Number of hidden layers.
+        
+        bias (bool): 
+            Whether to use bias in linear layers.
+        
+        a (torch.Tensor): 
+            Adjacency matrix instance in either CBM or CSR format.
+        
+        a_t (torch.Tensor): 
+            Transpose of adjacency matrix (optional)
+    """
+    
     def __init__(self, layer, in_features, hidden_features, out_features, num_hidden_layers, bias, a, a_t=None):
         super(NodePrediction, self).__init__()
 
