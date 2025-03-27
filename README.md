@@ -2,15 +2,25 @@
 Refactor of latest version of CBM4Scale. New lean and informative benchmark.
 
 ## Setup
+The docker should be installed on the local machine as mentioned [here](https://docs.docker.com/get-started/get-docker/).
 ```bash
-git clone git@github.com:cbm4scale/cbm-benchmark.git --recursive            # Clone the repository via SSH
-cd cbm-benchmark
-git submodule init
-git submodule update
-python setup.py --setvars_path /home/guests2/tfa/intel/oneapi/setvars.sh    # Set the path to the setvars.sh file
+# On the local machine
+git clone https://github.com/cbm4scale/CBM-IPDPS25.git --recursive
+cd CBM-IPDPS25/
+docker build -t cbm4gnn .
+docker run --rm -ti --ipc=host --name cbm4gnn_instance cbm4gnn /bin/bash
+# Inside the Docker instance
+cd CBM-IPDPS25/
+python setup.py
 export LD_LIBRARY_PATH=./arbok/build/:$LD_LIBRARY_PATH
 export PYTHONPATH=./:$PYTHONPATH
 ```
+
+## Running the code
+To reproduce the results fom the article, you can run the following bash scripts:
+
+### alpha_searcher.sh
+Runs the matrix multiplication method (`matmul(x,y)`) of `cbm/cbm4mm.py` for each alpha value specified in ```bash ALPHAS``` 
 
 ## Grid search
 ### benchmark_gnn.sh (example)

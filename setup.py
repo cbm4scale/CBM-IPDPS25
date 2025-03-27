@@ -9,9 +9,16 @@ def set_mkl_var_and_run_cbm_setup(setvars_path):
     os.chdir(setup_dir)
 
     # Combine source and setup.py execution into one command
-    combined_command = f"source {setvars_path} && python setup.py build_ext --inplace" # develop
-    subprocess.check_call(combined_command, shell=True, executable="/bin/bash")
+    # combined_command = f"source {setvars_path} && python setup.py build_ext --inplace" # develop
+    try:
+    	subprocess.check_call(f"source {setvars_path}", shell=True, executable="/bin/bash")
+    except Exception:
+    	print("Intle MKL set vars error.")
 
+    try:
+        subprocess.check_call("python setup.py build_ext --inplace", shell=True, executable="/bin/bash")
+    except Exception:
+        print("CBM setup error.")
 
 def cmake_for_arbok():
     # Change directory to where setup.py is located
@@ -20,8 +27,10 @@ def cmake_for_arbok():
 
     # Combine source and setup.py execution into one command
     cmake_command = "[ -d 'build' ] || cmake -B build -S . -DCMAKE_BUILD_TYPE=Release && cmake --build build/"
-    subprocess.check_call(cmake_command, shell=True, executable="/bin/bash")
-
+    try:    
+    	subprocess.check_call(cmake_command, shell=True, executable="/bin/bash")
+    except Exception:
+        print("Arbok error (Expcted)")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build a Python extension with environment variables sourced from Intel's setvars.sh.")
