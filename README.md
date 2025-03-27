@@ -16,6 +16,12 @@ export LD_LIBRARY_PATH=./arbok/build/:$LD_LIBRARY_PATH
 export PYTHONPATH=./:$PYTHONPATH
 ```
 
+## Running the code
+To reproduce the results fom the article, you can run the following bash scripts:
+
+### alpha_searcher.sh
+Prints 
+
 ## Grid search
 ### benchmark_gnn.sh (example)
 ```bash
