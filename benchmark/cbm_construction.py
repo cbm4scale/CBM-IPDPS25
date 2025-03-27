@@ -9,7 +9,7 @@ execution, the script outputs benchmarking statistics including:
     - compression ratio with respect to CSR format.
 
 Example Usage:
-    [OMP_ENV_VARS] python benchmark/validate_generic_matmul --dataset COLLAB 
+    [OMP_ENV_VARS] python benchmark/cbm_construction.py --dataset COLLAB 
 
 Note: 
     - See 'parser.add_arguments' for more options.
