@@ -196,6 +196,7 @@ This script validates the correction different matrix multiplication methods wit
 - `cbm/cbm4{mm,ad,dad}.py` via `benchmark/benchmark_matmul.py`.
 
 This validation is performed by comparing the resulting matrices (element-wise) between the classes mentioned above and `cbm/mkl4{mm,ad,dad}.py`.
+Again, the alpha values used are the ones set in `benchmark/utilities.py`.
 
 #### How to Run:
 1. Open the `scripts/validate.sh` and modify the following variables:
