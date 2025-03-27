@@ -58,20 +58,55 @@ This repository contains the refactored version of the latest CBM4Scale, featuri
     ```
 ## Running the Code
 
-Reproduce the results in **Accelerating Graph Neural Networks Using a Novel
-Computation-Friendly Matrix Compression Format**:
+To reproduce the results of the paper, run the following scripts from `CBM-IPDPS25/`:
 
-### `scripts/alpha_searcher.sh`
+### `./scripts/alpha_searcher.sh`
+This script calculates the execution time of the matrix multiplication method defined in `cbm/cbm4mm.py` via `benchmark/benchmark_matmul.py` for each combination of alpha values specified in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array. 
 
-This script runs the matrix multiplication method located in `cbm/cbm4mm.py` via `benchmark/benchmark_matmul.py`. It iterates through each alpha value in the `ALPHAS=[...]` array and each dataset in the `DATASETS=[...]` array. Upon completion, the script generates a new file named `alpha_searcher_results.txt`, which contains the runtime (in seconds) for each combination of alpha values and datasets using the CBM format.
+Upon completion, the script generates a results file named `alpha_searcher_results.txt`, which records the matrix multiplication runtime, in seconds, for each combination of alpha values and datasets using the CBM format. Additionally, the resulting file includes the execution time of the matrix multiplication method from `cbm/mkl4mm.py`, which converts the datasets to CSR format and serves as the baseline for comparison.
 
-#### How to use:
+#### How to Run:
+1. Open the `scripts/alpha_searcher.sh` and modify the following variables:
+   - `MAX_THREADS=...`  
+     Set this variable to the maximum number of physical cores on your machine.
+   - `THREADS=(...)`  
+     Include in this array the specific thread counts you want to experiment with.  
+      
+2. Run `./scripts/alpha_searcher.sh` inside the `CBM-IPDPS25/` direction.
 
-1. Make sure you have set the correct alpha values and datasets in the `ALPHAS` and `DATASETS` arrays in the `alpha_searcher.sh` script.
-   
-2. Run the script:
-   ```bash
-   bash scripts/alpha_searcher.sh
+### `./scripts/compression_metrics.sh`
+This script evaluates the performance of matrix compression into the CBM format using `cbm/cbm4mm.py`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
+
+Upon completion, the script generates a results file named `compression_metrics_results.txt`, which records the compression time, in seconds, and the achieved compression ratio for each alpha value and dataset combination.
+
+#### How to Run:
+1. Open the `scripts/compression_metrics.sh` and modify the following variables:
+   - `MAX_THREADS=...`  
+     Set this variable to the maximum number of physical cores on your machine.
+   - `THREADS=(...)`  
+     Include in this array the specific thread counts you want to experiment with.  
+      
+2. Run `./scripts/compression_metrics.sh` inside the `CBM-IPDPS25/` direction.
+
+### `./scripts/run_matmul.sh`
+This script evaluates the performance of different matrix multiplication methods using both CBM and CSR formats located in:  
+   - `cbm/cbm4mm.py`, `cbm/mkl4mm.py`, `cbm/cbm4ad.py`, `cbm/mkl4ad.py`, `cbm/cbm4dad.py`, and `cbm/mkl4dad.py`.
+
+cbmusing `cbm/cbm4mm.py`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
+
+Upon completion, the script generates a results file named `compression_metrics_results.txt`, which records the compression time, in seconds, and the achieved compression ratio for each alpha value and dataset combination.
+
+#### How to Run:
+1. Open the `scripts/run_matmul.sh` and modify the following variables:
+   - `MAX_THREADS=...`  
+     Set this variable to the maximum number of physical cores on your machine.
+   - `THREADS=(...)`  
+     Include in this array the specific thread counts you want to experiment with.  
+      
+2. Run `./scripts/compression_metrics.sh` inside the `CBM-IPDPS25/` direction.
+
+
+
 --------------------------------------------------------------------
 
 # cbm-benchmark
