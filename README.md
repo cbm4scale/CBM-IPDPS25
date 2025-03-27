@@ -30,7 +30,7 @@ The artifacts in this repository are also part of our application to the **Open-
    cd CBM-IPDPS25/
    git submodule init
    git submodule update
-   python conda_setup.py  # If Intel oneAPI is not installed in your default directory, use: --setvars_path PATH_TO_ONEAPI/setvars.sh
+   python conda_setup.py  # If Intel oneAPI is not installed in the default directory, use: --setvars_path PATH_TO_ONEAPI/setvars.sh
    export LD_LIBRARY_PATH=./arbok/build/:$LD_LIBRARY_PATH
    export PYTHONPATH=./:$PYTHONPATH
    ```
