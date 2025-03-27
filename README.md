@@ -1,8 +1,8 @@
-# CBM-Benchmark
+# CBM-IPDPS25
 
-This repository contains the refactored version of the latest CBM4Scale, featuring a streamlined and informative benchmark for matrix multiplication.
+This repository contains the refactored version of the code used for experimental evaluation in **Accelerating Graph Neural Networks Using a Novel
+Computation-Friendly Matrix Compression Format** - accepted in IPDPS'25 .
 
----
 
 ## Setup
 
@@ -68,12 +68,29 @@ Upon completion, the script generates a results file named `alpha_searcher_resul
 #### How to Run:
 1. Open the `scripts/alpha_searcher.sh` and modify the following variables:
    - `MAX_THREADS=...`  
-     Set this variable to the maximum number of physical cores on your machine.
+        Set this variable to the maximum number of physical cores on your machine.
    - `THREADS=(...)`  
-     Include in this array the specific thread counts you want to experiment with.  
+        Include in this array the thread counts you want to experiment with.
       
 2. Run `./scripts/alpha_searcher.sh` inside the `CBM-IPDPS25/` direction.
 
+Other configuration options (use default values to reproduce our experiments):  
+   - `DATASETS=(...)`  
+       Include in this array the datasets that should be considered..  
+   
+   - `COLUMNS=(...)`  
+        Include in this array the number of columns (of the random operand matrices) you want to experiment with.
+     
+   - `ITERATIONS=(...)`  
+        Include in this array the number of matrix multiplications to be measured.
+
+   - `WARMUPS=(...)`  
+        Include in this array the number of warmup iterations to be run before recording starts.
+
+   - `ALPHAS=(...)`  
+       Include in this array the alpha values to be considered.
+
+     
 ### `./scripts/compression_metrics.sh`
 This script evaluates the performance of matrix compression into the CBM format using `cbm/cbm4mm.py`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
 
@@ -88,22 +105,84 @@ Upon completion, the script generates a results file named `compression_metrics_
       
 2. Run `./scripts/compression_metrics.sh` inside the `CBM-IPDPS25/` direction.
 
-### `./scripts/run_matmul.sh`
-This script evaluates the performance of different matrix multiplication methods using both CBM and CSR formats located in:  
-   - `cbm/cbm4mm.py`, `cbm/mkl4mm.py`, `cbm/cbm4ad.py`, `cbm/mkl4ad.py`, `cbm/cbm4dad.py`, and `cbm/mkl4dad.py`.
+Other configuration options (use default values to reproduce our experiments):   
+   - `DATASETS=(...)`  
+       Include in this array the datasets that should be considered..  
+     
+   - `ITERATIONS=(...)`  
+        Include in this array the number of times dataset should be converted to CBM format..
 
-cbmusing `cbm/cbm4mm.py`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
+   - `WARMUPS=(...)`  
+        Include in this array the number of warmup iterations to be run before recording starts.
 
-Upon completion, the script generates a results file named `compression_metrics_results.txt`, which records the compression time, in seconds, and the achieved compression ratio for each alpha value and dataset combination.
+   - `ALPHAS=(...)`  
+       Include in this array the alpha values to be considered.
+
+
+### `./scripts/matmul.sh`
+This script evaluates the performance of different matrix multiplication methods with both CBM and CSR formats using:  
+   - `cbm/cbm4{mm,ad,dad}.py` and `cbm/mkl4{mm,ad,dad}.py` via `benchmark/benchmark_matmul.py`.
+   - The alpha values used to convert the dataset to CBM format are defined in `benchmark/utilities.py`.
+
+Upon completion, the script generates a results file named `matmul_results.txt`, which records time related metrics for matrix multiplication.
+
 
 #### How to Run:
-1. Open the `scripts/run_matmul.sh` and modify the following variables:
+1. Open the `scripts/matmul.sh` and modify the following variables:
    - `MAX_THREADS=...`  
      Set this variable to the maximum number of physical cores on your machine.
    - `THREADS=(...)`  
      Include in this array the specific thread counts you want to experiment with.  
-      
-2. Run `./scripts/compression_metrics.sh` inside the `CBM-IPDPS25/` direction.
+
+2. Run `./scripts/matmul.sh` inside the `CBM-IPDPS25/` direction.  
+
+Other configuration options (use default values to reproduce our experiments):    
+   - `DATASETS=(...)`  
+       Include in this array the datasets that should be considered..  
+   
+   - `COLUMNS=(...)`  
+        Include in this array the number of columns (of the random operand matrices) you want to experiment with.
+     
+   - `ITERATIONS=(...)`  
+        Include in this array the number of matrix multiplications to be measured.
+
+   - `WARMUPS=(...)`  
+        Include in this array the number of warmup iterations to be run before recording starts.
+
+
+### `./scripts/inference.sh`
+This script evaluates the performance of the CBM format in the context ofGraph Convolutional Neural Network (GCN) inference:  
+- The graph's laplacian is represented in CBM (`cbm/cbm4dad}.py`) or CSR (`cbm/mkl4dad}.py`) formats.
+- Theinference itself is executed by `benchmark/benchmark_inference.py`.  
+- The alpha values used to convert the dataset to CBM format are defined in `benchmark/utilities.py`.
+
+Upon completion, the script generates a results file named `inference_results.txt`, which records the time related metrics for GCN inference.
+
+#### How to Run:
+1. Open the `scripts/inference.sh` and modify the following variables:
+   - `MAX_THREADS=...`  
+     Set this variable to the maximum number of physical cores on your machine.
+   - `THREADS=(...)`  
+     Include in this array the specific thread counts you want to experiment with.  
+       
+2. Run `./scripts/inference.sh` inside the `CBM-IPDPS25/` direction.
+
+Other configuration options (use default values to reproduce our experiments):  
+   - `DATASETS=(...)`  
+        Include in this array the datasets that should be considered..  
+
+   - `NUM_HIDDEN_LAYERS=(...)`  
+        Include in this array the number of hidden layers to be added to the GCN.
+   
+   - `HIDDEN FEATURES=(...)`  
+        Include in this array the number of columns to be used in the feature and learnable matrices.
+     
+   - `EPOCHS=(...)`  
+        Include in this array the number of GCN inferences to be measured.
+
+   - `WARMUPS=(...)`  
+        Include in this array the number of warmup epochs to be run before recording starts.
+
 
 
 
