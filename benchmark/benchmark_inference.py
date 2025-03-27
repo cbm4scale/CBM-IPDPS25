@@ -12,7 +12,7 @@ At the end of execution, the script outputs benchmarking statistics including:
     - minimum and maximum inference time recorded.
 
 Example Usage:
-    [OMP_ENV_VARS] python benchmark/benchmark_inference --nn cbm-gcn-inference
+    [OMP_ENV_VARS] python benchmark/benchmark_inference.py --nn cbm-gcn-inference
 
 Note: 
     - See 'parser.add_arguments' for more options.
