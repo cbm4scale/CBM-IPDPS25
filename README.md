@@ -20,7 +20,7 @@ export PYTHONPATH=./:$PYTHONPATH
 To reproduce the results fom the article, you can run the following bash scripts:
 
 ### alpha_searcher.sh
-Prints 
+Runs the matrix multiplication method (`matmul(x,y)`) of `cbm/cbm4mm.py` for each alpha value specified in ```bash ALPHAS``` 
 
 ## Grid search
 ### benchmark_gnn.sh (example)
