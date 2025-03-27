@@ -52,7 +52,7 @@ The artifacts in this repository are also part of our application to the **Open-
    Once inside the container, navigate to the project directory and set up the environment:
     ```bash
     cd CBM-IPDPS25/
-    python setup.py
+    python docker_setup.py
     export LD_LIBRARY_PATH=./arbok/build/:$LD_LIBRARY_PATH
     export PYTHONPATH=./:$PYTHONPATH
     ```
