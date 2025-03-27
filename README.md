@@ -1,8 +1,7 @@
 # CBM-IPDPS25
+This repository contains the refactored implementation of the code used for the experimental evaluation in **"Accelerating Graph Neural Networks Using a Novel Computation-Friendly Matrix Compression Format"**, accepted at **IPDPS 2025**.  
 
-This repository contains the refactored version of the code used for experimental evaluation in **Accelerating Graph Neural Networks Using a Novel
-Computation-Friendly Matrix Compression Format** - accepted in IPDPS'25 .
-
+The artifacts in this repository are also part of our application to the **Open-Source Contribution Award** of **IPDPS 2025**.  
 
 ## Setup
 
@@ -47,6 +46,7 @@ Computation-Friendly Matrix Compression Format** - accepted in IPDPS'25 .
    git clone https://github.com/cbm4scale/CBM-IPDPS25.git --recursive
    cd CBM-IPDPS25/
    docker build -t cbm4gnn .
+   docker run --rm -ti --ipc=host --name cbm4gnn_instance cbm4gnn /bin/bash
    ```
 3. **Inside the Docker Container**  
    Once inside the container, navigate to the project directory and set up the environment:
@@ -56,14 +56,16 @@ Computation-Friendly Matrix Compression Format** - accepted in IPDPS'25 .
     export LD_LIBRARY_PATH=./arbok/build/:$LD_LIBRARY_PATH
     export PYTHONPATH=./:$PYTHONPATH
     ```
-## Running the Code
-
-To reproduce the results of the paper, run the following scripts from `CBM-IPDPS25/`:
+## Reproducing the Experiments from the Paper
 
 ### `./scripts/alpha_searcher.sh`
 This script calculates the execution time of the matrix multiplication method defined in `cbm/cbm4mm.py` via `benchmark/benchmark_matmul.py` for each combination of alpha values specified in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array. 
 
 Upon completion, the script generates a results file named `alpha_searcher_results.txt`, which records the matrix multiplication runtime, in seconds, for each combination of alpha values and datasets using the CBM format. Additionally, the resulting file includes the execution time of the matrix multiplication method from `cbm/mkl4mm.py`, which converts the datasets to CSR format and serves as the baseline for comparison.
+
+> **Note:** `cbm/cbm4mm.py` and `cbm/mkl4mm.py` contain python classes to store matrix **A** in CBM and CSR format, and support matrix products of the form **A** @ **X**.
+> Here, **A** is the adjacency matrix of the dataset and **X** is a dense real-valued matrix. 
+
 
 #### How to Run:
 1. Open the `scripts/alpha_searcher.sh` and modify the following variables:
@@ -90,9 +92,8 @@ Other configuration options (use default values to reproduce our experiments):
    - `ALPHAS=(...)`  
        Include in this array the alpha values to be considered.
 
-     
 ### `./scripts/compression_metrics.sh`
-This script evaluates the performance of matrix compression into the CBM format using `cbm/cbm4mm.py`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
+This script evaluates the performance of CBM's compression algorithm using `cbm/cbm4mm.py` via `benchmark/cbm_construction`. Specifically, it measures the time required to convert a matrix to CBM format and calculates the compression ratio relative to the CSR format for each combination of alpha values defined in the `ALPHAS=[...]` array and datasets in the `DATASETS=[...]` array.  
 
 Upon completion, the script generates a results file named `compression_metrics_results.txt`, which records the compression time, in seconds, and the achieved compression ratio for each alpha value and dataset combination.
 
@@ -126,6 +127,12 @@ This script evaluates the performance of different matrix multiplication methods
 
 Upon completion, the script generates a results file named `matmul_results.txt`, which records time related metrics for matrix multiplication.
 
+> **Note:** `cbm/cbm4ad.py` and `cbm/mkl4ad.py` contain python classes to store matrix **A** @ **D^(-1/2)** in CBM and CSR format, and support matrix products of the form **A** @ **D^(-1/2)** @ **X**.
+> Here, **A** is the adjacency matrix of the dataset, **D** is the diagonal degree matrix of **A**, and **X** is a dense real-valued matrix. 
+
+> **Note:** `cbm/cbm4dad.py` and `cbm/mkl4dad.py` contain python classes to store matrix **D^(-1/2)** @ **A** @ **D^(-1/2)** in CBM and CSR format, and support matrix products of the form **D^(-1/2)** @ **A** @ **D^(-1/2)** @ **X**.
+> Here, **A** is the adjacency matrix of the dataset, **D** is the diagonal degree matrix of **A**, and **X** is a dense real-valued matrix. 
+
 
 #### How to Run:
 1. Open the `scripts/matmul.sh` and modify the following variables:
@@ -150,10 +157,11 @@ Other configuration options (use default values to reproduce our experiments):
         Include in this array the number of warmup iterations to be run before recording starts.
 
 
+
 ### `./scripts/inference.sh`
-This script evaluates the performance of the CBM format in the context ofGraph Convolutional Neural Network (GCN) inference:  
+This script evaluates the performance of the CBM format in the context of Graph Convolutional Neural Network (GCN) inference:  
 - The graph's laplacian is represented in CBM (`cbm/cbm4dad}.py`) or CSR (`cbm/mkl4dad}.py`) formats.
-- Theinference itself is executed by `benchmark/benchmark_inference.py`.  
+- The inference itself is executed by `benchmark/benchmark_inference.py`.  
 - The alpha values used to convert the dataset to CBM format are defined in `benchmark/utilities.py`.
 
 Upon completion, the script generates a results file named `inference_results.txt`, which records the time related metrics for GCN inference.
@@ -183,10 +191,44 @@ Other configuration options (use default values to reproduce our experiments):
    - `WARMUPS=(...)`  
         Include in this array the number of warmup epochs to be run before recording starts.
 
+### `./scripts/validate.sh`
+This script validates the correction different matrix multiplication methods with CBM formats using: 
+- `cbm/cbm4{mm,ad,dad}.py` via `benchmark/benchmark_matmul.py`.
 
+This validation is performed by comparing the resulting matrices (element-wise) between the classes mentioned above and `cbm/mkl4{mm,ad,dad}.py`.
 
+#### How to Run:
+1. Open the `scripts/validate.sh` and modify the following variables:
+   - `MAX_THREADS=...`  
+     Set this variable to the maximum number of physical cores on your machine.
+   - `THREADS=(...)`  
+     Include in this array the specific thread counts you want to experiment with.  
+       
+2. Run `./scripts/valiate.sh` inside the `CBM-IPDPS25/` direction.
 
---------------------------------------------------------------------
+Other configuration options (use default values to reproduce our experiments):  
+   - `DATASETS=(...)`  
+       Include in this array the datasets that should be considered..  
+   
+   - `COLUMNS=(...)`  
+        Include in this array the number of columns (of the random operand matrices) you want to experiment with.
+     
+   - `ITERATIONS=(...)`  
+        Include in this array the number of matrix multiplications to be measured.
+
+   - `RTOL=...`  
+        Specifies the relative tolerance interval to be considered during validation.
+     
+     - `ATOL=...`  
+        Specifies the absolute tolerance interval to be considered in the validation.
+
+## Aditional Artifacts  
+
+If you would like to use the CBM format in your own pytorch projects, the classes mentioned can be a bit restrictive since matrix **D** is always a diagonal degree matrix of **A**.
+Instead, consider using the class defined in `cbm/cbm.py` which accepts two optional and precalculated diagonal matrices (`d_left` and `d_right`) as input. The script 
+`benchmark/validate_general_matmul.py` exemplifies the usage of `cbm/cbm.py`.
+
+ --------------------------------------------------------------------
 
 # cbm-benchmark
 Refactor of latest version of CBM4Scale. New lean and informative benchmark. (CHANGE)
