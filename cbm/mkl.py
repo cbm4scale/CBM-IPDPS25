@@ -73,13 +73,7 @@ class mkl():
             scaled_values *= d_right[self.a.col_indices()]
         
         # store row- and/or column-scaled '.a'
-        if d_left is not None or d_right is not None: 
-#            self.a = torch.sparse_coo_tensor(
-#                edge_index.to(dtype=torch.int32),
-#                new_edge_values.to(dtype=torch.float),
-#                (self.num_nodes, self.num_nodes)
-#            ).coalesce().to_sparse_csr()
-
+        if d_left is not None or d_right is not None:
             self.a = torch.sparse_csr_tensor(
                 self.a.crow_indices().to(torch.int32),
                 self.a.col_indices().to(torch.int32),

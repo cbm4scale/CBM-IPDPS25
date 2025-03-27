@@ -5,8 +5,13 @@ from cbm import cbm_mkl_cpp as cbm_cpp
 class cbm4dad(cbm4mm):
     '''
     CBM matrix representation and support multiplication with dense matrices:
-    - Represents matrix D^(-1/2) @ A @ D^(-1/2) in CBM, where D is a diagonal degree matrix of A.
-    - Supports matrix products (D^(-1/2) @ A @ D^(-1/2)) @ X, where X is a real-valued dense matrix. 
+    - Convert matrix D^(-1/2) @ A @ D^(-1/2) to CBM format.
+    - Supports matrix product (D^(-1/2) @ A @ D^(-1/2)) @ X. X is a real-valued dense matrix. 
+
+    Where:
+    - A is the adjacency matrix of the dataset.
+    - D is the diagonal degree matrix of A.
+    - X is a real-valued dense matrix.
 
     Attributes:
          '.num_nodes' (int): 
@@ -39,6 +44,28 @@ class cbm4dad(cbm4mm):
         - .matmul(...) method is inherited from parent class. (no need for mods).
     '''
     def __init__(self, edge_index, edge_values, alpha=0):
+        '''
+        Stores matrix A @ D^(-1/2) in CBM format.
+
+        Args:
+            edge_index (torch.Tensor (dtype=torch.int32)): 
+                Coordinates of nonzero elements in A.
+
+            edge_values (torch.Tensor (dtype=torch.float)): 
+                Values of the nonzero elements in A.
+
+            alpha (int, optional):
+                alpha value used by the compression algorithm.
+                If not provided alpha is assumed to be 0.
+
+        Shape:
+            - edge_index: (2, nnz(A))
+            - edge_values: (nnz(A),)
+
+        Note:
+            - nnz(A) represents the number of nonzero elements in matrix A.
+        '''
+                
         super().__init__(edge_index, edge_values, alpha)
 
         # For GCNConv Â = D^{⁻1/2} A D^{⁻1/2}, when D is the degree matrix of A 

@@ -1,11 +1,9 @@
 import torch
 from cbm.cbm import cbm
 from cbm.mkl import mkl
-from cbm.cbm4gcn import cbm4gcn
 from cbm.cbm4mm import cbm4mm
 from cbm.cbm4ad import cbm4ad
 from cbm.cbm4dad import cbm4dad
-from cbm.mkl4gcn import mkl4gcn
 from cbm.mkl4mm import mkl4mm
 from cbm.mkl4ad import mkl4ad
 from cbm.mkl4dad import mkl4dad
@@ -24,11 +22,11 @@ data_dir = os.path.dirname(os.path.abspath(__file__)) + '../data'
 
 def set_adjacency_matrix(layer, edge_index, d_left=None, d_right=None, alpha=16):
     if layer == "cbm-gcn-inference":
-        # Class defined in 'cbm/cbm4gcn' - used in our experimental evaluation.
-        return cbm4gcn(edge_index.to(torch.int32), torch.ones(edge_index.size(1), dtype=torch.float), alpha)
+        # Class defined in 'cbm/cbm4dad' - used in our experimental evaluation.
+        return cbm4dad(edge_index.to(torch.int32), torch.ones(edge_index.size(1), dtype=torch.float), alpha)
     elif layer == "mkl-gcn-inference":
-        # Class defined in 'cbm/mkl4gcn' - used in our experimental evaluation.  
-        return mkl4gcn(edge_index)
+        # Class defined in 'cbm/mkl4dad' - used in our experimental evaluation.  
+        return mkl4dad(edge_index)
     elif layer == "cbm-ax":
         # Class defined in 'cbm/cbm4mm' - used in our experimental evaluation.  
         return cbm4mm(edge_index.to(torch.int32), torch.ones(edge_index.size(1), dtype=torch.float), alpha)

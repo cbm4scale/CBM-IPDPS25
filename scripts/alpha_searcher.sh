@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MAX_THREADS="16"
-THREADS=(1 16)
+MAX_THREADS="16" # <--- Include maximum number of threads (physical cores)
+THREADS=(1 16) # <--- Include number of threads to execute PYTHON_FILE
 
 # Define the Python file to run
 PYTHON_FILE="benchmark/benchmark_matmul.py"
@@ -13,10 +13,10 @@ WARMUPS=(10)
 ALPHAS=(0 1 2 4 8 16 32)
 
 # Extract dataset names automatically
-DATASETS=("ca-HepPh") # "ca-AstroPh" "Cora" "PubMed" "COLLAB" "coPapersCiteseer" "coPapersDBLP" "ogbn-proteins-raw")
+DATASETS=("ca-HepPh" "ca-AstroPh" "Cora" "PubMed" "COLLAB" "coPapersCiteseer" "coPapersDBLP" "ogbn-proteins-raw")
 
 # Temporary file to store results
-RESULTS_FILE="results.txt"
+RESULTS_FILE="alpha-searcher-results.txt"
 > $RESULTS_FILE
 
 # Generate all possible combinations
