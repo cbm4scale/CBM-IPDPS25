@@ -13,7 +13,7 @@ By default, matrix comparison uses an absolute tolerance (--atol) and relative
 tolerace (--rtol) equal to '0' and '1e-5', but these values can be modified. 
 
 Example Usage:
-    [OMP_ENV_VARS] python benchmark/validate_generic_matmul --dataset COLLAB  
+    [OMP_ENV_VARS] python benchmark/validate_generic.py --dataset COLLAB  
 
 Note:
     - See `parser.add_arguments` for more options.
