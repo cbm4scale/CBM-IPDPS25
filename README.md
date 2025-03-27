@@ -224,7 +224,7 @@ Other configuration options (use default values to reproduce our experiments):
 
 ## Aditional Artifacts  
 
-If you would like to use the CBM format in your own pytorch projects, the classes mentioned can be a bit restrictive since matrix **D** is always a diagonal degree matrix of **A**.
+If you would like to use the CBM format in your own pytorch projects, the classes mentioned before might be a bit restrictive since matrix **D** is always a diagonal degree matrix of **A**.
 Instead, consider using the class defined in `cbm/cbm.py` which accepts two optional and precalculated diagonal matrices (`d_left` and `d_right`) as input. The script 
 `benchmark/validate_general_matmul.py` exemplifies the usage of `cbm/cbm.py`.
 
