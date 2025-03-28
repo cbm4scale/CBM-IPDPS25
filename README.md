@@ -80,7 +80,7 @@ Other configuration options (use default values to reproduce our experiments):
    - `DATASETS=(...)`  
        Include in this array the datasets that should be considered..  
    
-   - `COLUMNS=(...)`  
+   - `NCOLUMNS=(...)`  
         Include in this array the number of columns (of the random operand matrices) you want to experiment with.
      
    - `ITERATIONS=(...)`  
@@ -147,7 +147,7 @@ Other configuration options (use default values to reproduce our experiments):
    - `DATASETS=(...)`  
        Include in this array the datasets that should be considered..  
    
-   - `COLUMNS=(...)`  
+   - `NCOLUMNS=(...)`  
         Include in this array the number of columns (of the random operand matrices) you want to experiment with.
      
    - `ITERATIONS=(...)`  
@@ -211,7 +211,7 @@ Other configuration options (use default values to reproduce our experiments):
    - `DATASETS=(...)`  
        Include in this array the datasets that should be considered..  
    
-   - `COLUMNS=(...)`  
+   - `NCOLUMNS=(...)`  
         Include in this array the number of columns (of the random operand matrices) you want to experiment with.
      
    - `ITERATIONS=(...)`  
