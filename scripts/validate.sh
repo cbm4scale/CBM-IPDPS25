@@ -8,7 +8,7 @@ PYTHON_FILE="benchmark/validate.py"
 
 # Define lists of values for each variable
 OPS=("ax" "adx" "dadx")
-COLUMNS=(500)
+NCOLUMNS=(500)
 ITERATIONS=(50)
 RTOL=1e-5
 ATOL=0
@@ -27,9 +27,7 @@ ALPHA_MAP["ogbn-proteins-raw"]=""  # Empty string means revert to default (no --
 DATASETS=(${!ALPHA_MAP[@]})
 
 # Temporary file to store results
-mkdir -p results
-
-RESULTS_FILE="results/validate_results.txt"
+RESULTS_FILE="validate_results.txt"
 > $RESULTS_FILE
 > val_temp_results.txt
 
@@ -37,7 +35,7 @@ RESULTS_FILE="results/validate_results.txt"
 for THREAD in "${THREADS[@]}"; do
   for OP in "${OPS[@]}"; do
     for DATASET in "${DATASETS[@]}"; do
-      for COL in "${COLUMNS[@]}"; do
+      for COL in "${NCOLUMNS[@]}"; do
         for ITER in "${ITERATIONS[@]}"; do
           # Read alpha values as an array
           IFS=' ' read -r -a ALPHAS <<< "${ALPHA_MAP[$DATASET]}"

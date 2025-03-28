@@ -8,7 +8,7 @@ PYTHON_FILE="benchmark/benchmark_matmul.py"
 
 # Define lists of values for each variable
 OPS=("cbm-ax" "mkl-ax" "cbm-adx" "mkl-adx" "cbm-dadx" "mkl-dadx")
-COLUMNS=(500)
+NCOLUMNS=(500)
 ITERATIONS=(250)
 WARMUPS=(10)
 
@@ -37,7 +37,7 @@ RESULTS_FILE="results/matmul_results.txt"
 for THREAD in "${THREADS[@]}"; do
   for OP in "${OPS[@]}"; do
     for DATASET in "${DATASETS[@]}"; do
-      for COL in "${COLUMNS[@]}"; do
+      for COL in "${NCOLUMNS[@]}"; do
         for ITER in "${ITERATIONS[@]}"; do
           for WARMUP in "${WARMUPS[@]}"; do
             # Read alpha values as an array
