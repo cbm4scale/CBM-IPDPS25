@@ -1,7 +1,7 @@
 # CBM-IPDPS25
 This repository contains the refactored implementation of the code used for the experimental evaluation in **"Accelerating Graph Neural Networks Using a Novel Computation-Friendly Matrix Compression Format"**, accepted at **IPDPS 2025**.  
 
-The artifacts in this repository are also part of our nomination to the **Open-Source Contribution Award** of **IPDPS 2025**.  
+The artifacts in this repository are also part of our nomination to the **Best Open-Source Contribution Award Submission** of **IPDPS 2025**.  
 
 ## Setup
 
