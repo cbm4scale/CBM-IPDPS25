@@ -18,7 +18,7 @@ DATASETS=("ca-HepPh" "ca-AstroPh" "Cora" "PubMed" "COLLAB" "coPapersCiteseer" "c
 # Temporary file to store results
 mkdir -p results
 
-RESULTS_FILE="results/alpha-searcher-results.txt"
+RESULTS_FILE="results/alpha_searcher_results.txt"
 > $RESULTS_FILE
 > alpha_temp_results.txt
 
@@ -32,9 +32,9 @@ for THREAD in "${THREADS[@]}"; do
           
           ARGS="--dataset $DATASET --iterations $ITER --warmup $WARMUP --columns $COL"
           
-          echo "Running: OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY=\"0-$(($MAX_THREADS-1))\" python benchmark/benchmark_matmul.py --nn mkl-ax $ARGS"
+          echo "Running: OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY=\"0-$(($MAX_THREADS-1))\" python benchmark/benchmark_matmul.py --operation mkl-ax $ARGS"
 
-          OUTPUT=$(OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY="0-$(($MAX_THREADS - 1))" python benchmark/benchmark_matmul.py --nn mkl-ax $ARGS)
+          OUTPUT=$(OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY="0-$(($MAX_THREADS - 1))" python benchmark/benchmark_matmul.py --operation mkl-ax $ARGS)
             
           # Extract performance metrics from the output
           MEAN=$(echo "$OUTPUT" | grep -oP "Mean: \K[\d\.]+")
@@ -46,10 +46,10 @@ for THREAD in "${THREADS[@]}"; do
           echo -e "[$THREAD][$ARGS]:\t\tMean: $MEAN\tStd: $STD\tMin: $MIN\tMax: $MAX" >> $RESULTS_FILE
 
           for ALPHA in "${ALPHAS[@]}"; do  
-            echo "Running: OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY=\"0-$(($MAX_THREADS-1))\" python benchmark/benchmark_matmul.py --nn cbm-ax $ARGS --alpha $ALPHA"
+            echo "Running: OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY=\"0-$(($MAX_THREADS-1))\" python benchmark/benchmark_matmul.py --operation cbm-ax $ARGS --alpha $ALPHA"
 
             # Execute the Python script with the environment variables
-            OUTPUT=$(OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY="0-$(($MAX_THREADS - 1))" python benchmark/benchmark_matmul.py --nn cbm-ax $ARGS --alpha $ALPHA)
+            OUTPUT=$(OMP_NUM_THREADS=$THREAD GOMP_CPU_AFFINITY="0-$(($MAX_THREADS - 1))" python benchmark/benchmark_matmul.py --operation cbm-ax $ARGS --alpha $ALPHA)
 
             # Extract performance metrics from the output
             MEAN=$(echo "$OUTPUT" | grep -oP "Mean: \K[\d\.]+")
