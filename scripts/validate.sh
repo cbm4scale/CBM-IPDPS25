@@ -27,7 +27,9 @@ ALPHA_MAP["ogbn-proteins-raw"]=""  # Empty string means revert to default (no --
 DATASETS=(${!ALPHA_MAP[@]})
 
 # Temporary file to store results
-RESULTS_FILE="validate_results.txt"
+mkdir -p results
+
+RESULTS_FILE="results/validate_results.txt"
 > $RESULTS_FILE
 > val_temp_results.txt
 
