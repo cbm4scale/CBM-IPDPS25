@@ -7,7 +7,7 @@ THREADS=(1 16) # <--- Include number of threads to execute PYTHON_FILE
 PYTHON_FILE="benchmark/benchmark_matmul.py"
 
 # Define lists of values for each variable
-COLUMNS=(500)  # Empty string ensures default value is used when omitted
+NCOLUMNS=(500)  # Empty string ensures default value is used when omitted
 ITERATIONS=(100)
 WARMUPS=(10)
 ALPHAS=(0 1 2 4 8 16 32)
@@ -22,7 +22,7 @@ RESULTS_FILE="alpha-searcher-results.txt"
 # Generate all possible combinations
 for THREAD in "${THREADS[@]}"; do
   for DATASET in "${DATASETS[@]}"; do
-    for COL in "${COLUMNS[@]}"; do
+    for COL in "${NCOLUMNS[@]}"; do
       for ITER in "${ITERATIONS[@]}"; do
         for WARMUP in "${WARMUPS[@]}"; do
           
