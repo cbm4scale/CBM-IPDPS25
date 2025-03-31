@@ -16,8 +16,12 @@ ALPHAS=(0 1 2 4 8 16 32)
 DATASETS=("ca-HepPh" "ca-AstroPh" "Cora" "PubMed" "COLLAB" "coPapersCiteseer" "coPapersDBLP" "ogbn-proteins-raw")
 
 # Temporary file to store results
-RESULTS_FILE="alpha-searcher-results.txt"
+mkdir -p results
+
+RESULTS_FILE="results/alpha-searcher-results.txt"
 > $RESULTS_FILE
+> alpha_temp_results.txt
+
 
 # Generate all possible combinations
 for THREAD in "${THREADS[@]}"; do
@@ -54,7 +58,7 @@ for THREAD in "${THREADS[@]}"; do
             MAX=$(echo "$OUTPUT" | grep -oP "Max: \K[\d\.]+")
             
             # Save the results in a structured format
-            echo -e "[$THREAD][$ARGS --alpha $ALPHA]:\t\tMean: $MEAN\tStd: $STD\tMin: $MIN\tMax: $MAX" >> $RESULTS_FILE
+            echo -e "[$THREAD][$ARGS --alpha $ALPHA]:\t\tMean: $MEAN\tStd: $STD\tMin: $MIN\tMax: $MAX" >> alpha_temp_results.txt
           done
         done
       done
@@ -63,4 +67,5 @@ for THREAD in "${THREADS[@]}"; do
 done
 
 # Print a pretty table of the results
-column -t -s $'\t' $RESULTS_FILE
+column -t -s $'\t' alpha_temp_results.txt > $RESULTS_FILE
+rm alpha_temp_results.txt
